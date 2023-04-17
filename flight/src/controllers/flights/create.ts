@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Flight } from "../../models/flight";
 import { Airline } from "../../models/airline";
+import crypto from "crypto";
 
 export const createFlight = async (req: Request, res: Response) => {
     try {
