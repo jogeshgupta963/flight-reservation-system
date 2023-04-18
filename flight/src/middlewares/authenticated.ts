@@ -19,7 +19,10 @@ async function isLoggedIn(req: Request, res: Response, next: NextFunction) {
     const decoded = req.cookies[process.env.COOKIE_NAME!];
 
     if (!decoded) {
-        throw new Error("NOT AUTHORISED");
+        return res.status(403).json({
+            success: false,
+            data: "Not Authorised",
+        });
     }
     try {
         const payload = jwt.verify(
@@ -32,18 +35,13 @@ async function isLoggedIn(req: Request, res: Response, next: NextFunction) {
         req.user = user;
     } catch (err) {
         if (err instanceof Error) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 data: err.message,
             });
         }
-        if (err instanceof Error) {
-            return res.json({
-                success: false,
-                data: err.message,
-            });
-        }
-        return res.json({
+
+        return res.status(400).json({
             success: false,
             data: "Something went wrong",
         });

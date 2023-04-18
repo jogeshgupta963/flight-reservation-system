@@ -4,7 +4,6 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        
         "prepare": "husky install",
         "start": "ts-node-dev src/index.ts",
         "test": "jest --watchAll --no-cache --detectOpenHandles --forceExit"
