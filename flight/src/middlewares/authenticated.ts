@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import "dotenv/config";
 import jwt from "jsonwebtoken";
+import { config } from "../config/config";
 
 export interface UserPayload {
     id: string;
@@ -16,7 +17,7 @@ declare global {
 }
 async function isLoggedIn(req: Request, res: Response, next: NextFunction) {
     // fetching cookie
-    const decoded = req.cookies[process.env.COOKIE_NAME!];
+    const decoded = req.cookies[config.COOKIE_NAME];
 
     if (!decoded) {
         return res.status(403).json({
@@ -25,10 +26,7 @@ async function isLoggedIn(req: Request, res: Response, next: NextFunction) {
         });
     }
     try {
-        const payload = jwt.verify(
-            decoded,
-            process.env.JWT_SECRET!
-        ) as UserPayload;
+        const payload = jwt.verify(decoded, config.JWT_SECRET) as UserPayload;
         //fetch user
 
         const user = payload;
