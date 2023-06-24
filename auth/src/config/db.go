@@ -20,12 +20,7 @@ var dbName = os.Getenv("DB_NAME")
 // var mongoURI = os.Getenv("MONGO_URI");
 
 var mongoURI = "mongodb+srv://admin:FYv5jqnidHPCxCOr@testing.s5sej.mongodb.net/"+dbName+"?retryWrites=true&w=majority"
-type User struct {
-	ID     string   `json:"id,omitempty" bson:"_id,omitempty"`
-	Name   string	`json:"name"`
-	Email   string	`json:"email"`
-	Password string	`json:"password"`
-}
+
 
 func ConnectDB() error {
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
