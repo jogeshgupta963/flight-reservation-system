@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"main/src/config"
+	"main/src/routes"
 	"main/src/util/helper"
 	"os"
 
@@ -19,12 +19,13 @@ func init(){
 func main() {
 	
 	app := fiber.New()
-	 
+	routes.Setup(app)
 	app.Get("/",func(c *fiber.Ctx) error{
 		return c.SendString("Index Page")
 	})
-	fmt.Println("ello",os.Getenv("MONGO_URI"))
-	config.ConnectDB()
-
-	app.Listen(os.Getenv("PORT"))
+	
+	// config.ConnectDB()
+	
+	app.Listen(":"+os.Getenv("PORT"))
+	fmt.Println("Server Started on ",os.Getenv("PORT"))
 }
