@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"encoding/hex"
+	"fmt"
 	"main/src/models"
 	"main/src/util/helper"
 	"os"
@@ -14,12 +14,12 @@ import (
 )
 
 func Register(c *fiber.Ctx) error {
-	User := models.GetCollection("user")
+	User := models.GetUserCollection()
 
 	// pull req.body and validate data
-	var body map[string]string;
-	err := c.BodyParser(&body)
-	if(err != nil || body["name"]=="" || body["email"]=="" || body["password"] ==""){
+	body := new(models.UserSchema);
+	err := c.BodyParser(body)
+	if(err != nil || body.Name=="" || body.Email=="" || body.Password ==""){
 		helper.ErrorPanic(err)
 		return c.Status(401).JSON(fiber.Map{
 			"success":false,
@@ -29,27 +29,24 @@ func Register(c *fiber.Ctx) error {
 
 	// search for duplicate user
 	var user models.UserSchema
-	query := bson.D{{
-		Key:"email",
-		Value:body["email"],
-	}}
-	
-	res := User.FindOne(c.Context(),query);
-	err = res.Decode(&user)
+	query := bson.M{"email":body.Email}
+		
+	 res := User.FindOne(c.Context(),query)
+	 err = res.Decode(&user)
 
-	if err != nil {
+	
+	if (err == nil) {
 		return c.Status(401).JSON(fiber.Map{
 			"success":"false",
 			"data":"User Already Exists",
 		})
-
 	}
-	// hash password
+	// // hash password
 		
-	password,_ := bcrypt.GenerateFromPassword([]byte(body["password"]),bcrypt.DefaultCost);
-	body["password"] = hex.EncodeToString(password)
+	password,_ := bcrypt.GenerateFromPassword([]byte(body.Password),bcrypt.DefaultCost);
+	body.Password = string(password)
 	//create user
-	body["ID"] = "";
+	body.ID = "";
 	resp,err := User.InsertOne(c.Context(),body)
 	
 	if(err != nil){
@@ -58,16 +55,16 @@ func Register(c *fiber.Ctx) error {
 			"data":"Internal Server Error",
 		})
 	}
-	// get user
+	// // get user
 		res = User.FindOne(c.Context(),bson.D{{
 			Key: "_id",
 			Value:resp.InsertedID,
 		}})
 		res.Decode(&user)
-	//jwt creation
+	// //jwt creation
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,jwt.MapClaims{
-		"email" :body["email"],
+		"email" :body.Email,
 		"id":resp.InsertedID,
 	})
 
@@ -79,18 +76,19 @@ func Register(c *fiber.Ctx) error {
 			"data": "Internal Server Error",
 		})
 	}
-	
+	fmt.Println(tokenString)
+	//create cookie
 	expiration,_ := time.ParseDuration(os.Getenv("JWT_EXPIRATION"))
 	c.Cookie(&fiber.Cookie{
 		Name:os.Getenv("COOKIE_NAME"),
 		Value: tokenString,
-		HTTPOnly: true,
+		// HTTPOnly: true,
 		Expires: time.Now().Add(expiration),
+		Secure: false,
 	})
-	//create cookie
 	return c.Status(200).JSON(fiber.Map{
 		"success":true,
-		"data":user,
+		"data":"user",
 	})
 
 }

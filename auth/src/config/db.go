@@ -16,16 +16,15 @@ type mongoInstance struct {
 }
 
 var Mg mongoInstance
-var dbName = os.Getenv("DB_NAME")
-// var mongoURI = os.Getenv("MONGO_URI");
 
-var mongoURI = "mongodb+srv://admin:FYv5jqnidHPCxCOr@testing.s5sej.mongodb.net/"+dbName+"?retryWrites=true&w=majority"
+
 
 
 
 func ConnectDB() error {
+	dbName := os.Getenv("DB_NAME")
+	var mongoURI = os.Getenv("MONGO_URI")
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
-	fmt.Println("ello",os.Getenv("MONGO_URI"))
 
 	helper.ErrorPanic(err)
 	db := client.Database(dbName)

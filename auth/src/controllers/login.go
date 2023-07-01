@@ -13,10 +13,11 @@ import (
 )
 
 func Login(c *fiber.Ctx) error{
+
+	User := models.GetUserCollection();
 	//pull my req.body
-	var data map[string]string
+	data := new(models.UserSchema) 
 	err := c.BodyParser(&data)
-	helper.ErrorPanic(err);
 	if err!= nil {
 		return c.Status(400).JSON(fiber.Map{
 			"success":false,
@@ -25,7 +26,7 @@ func Login(c *fiber.Ctx) error{
 	}
 	//check for pass and email in body
 
-	if data["password"] == "" || data["email"] == "" {
+	if data.Password == "" || data.Email == "" {
 		return c.Status(400).JSON(fiber.Map{
 			"success":false,
 			"data": "Invalid Password or Email",
@@ -35,12 +36,11 @@ func Login(c *fiber.Ctx) error{
 	var user models.UserSchema
 	query := bson.D{{
 		Key:"email",
-		Value:data["email"],
+		Value:data.Email,
 	}}
-	res := models.User.FindOne(c.Context(),query)
+	res := User.FindOne(c.Context(),query)
 	err = res.Decode(&user)
 
-	helper.ErrorPanic(err)
 	if(err != nil){
 		return c.Status(500).JSON(fiber.Map{
 			"success":false,
@@ -48,9 +48,9 @@ func Login(c *fiber.Ctx) error{
 		})
 	}
 	//match hashed pass
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password),[]byte(data["password"]))
-
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password),[]byte(data.Password))
 	if(err != nil){
+		// helper.ErrorPanic(err)
 		return c.Status(500).JSON(fiber.Map{
 			"success":false,
 			"data": "Invalid Password or Email",

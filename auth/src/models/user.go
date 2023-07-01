@@ -13,7 +13,7 @@ type UserSchema struct {
 	Password string `json:"password"`
 }
 
-var User *mongo.Collection = config.Mg.Db.Collection("user")
-func GetCollection(collection string) *mongo.Collection {
-	return config.Mg.Db.Collection(collection)
+// var User *mongo.Collection = config.Mg.Db.Collection("user")
+func GetUserCollection() *mongo.Collection {
+	return config.Mg.Db.Collection("user")
 }
