@@ -11,5 +11,7 @@ import (
 
 
 func Setup(app *fiber.App) {
-	app.Post("/api/auth/login", controllers.Login)
+	api := app.Group("/api/auth")
+	// api.Post("/login", controllers.Login)
+	api.Post("/register",controllers.Register)
 }

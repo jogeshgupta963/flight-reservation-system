@@ -2,21 +2,21 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"main/src/config"
 	"main/src/routes"
-	"main/src/util/helper"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/joho/godotenv"
 )
 
-func init(){
-	err := godotenv.Load()
-	helper.ErrorPanic(err)
-	log.Println("Env Loaded...")
-}
+// func init(){
+// 	err := godotenv.Load()
+// 	helper.ErrorPanic(err)
+// 	log.Println("Env Loaded...")
+// }
 func main() {
+	config.Init()
+	config.ConnectDB();
 	
 	app := fiber.New()
 	routes.Setup(app)
@@ -24,7 +24,6 @@ func main() {
 		return c.SendString("Index Page")
 	})
 	
-	// config.ConnectDB()
 	
 	app.Listen(":"+os.Getenv("PORT"))
 	fmt.Println("Server Started on ",os.Getenv("PORT"))

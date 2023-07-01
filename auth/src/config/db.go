@@ -22,6 +22,7 @@ var dbName = os.Getenv("DB_NAME")
 var mongoURI = "mongodb+srv://admin:FYv5jqnidHPCxCOr@testing.s5sej.mongodb.net/"+dbName+"?retryWrites=true&w=majority"
 
 
+
 func ConnectDB() error {
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
 	fmt.Println("ello",os.Getenv("MONGO_URI"))
