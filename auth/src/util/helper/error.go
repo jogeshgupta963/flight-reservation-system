@@ -1,7 +1,9 @@
 package helper
 
+import "log"
+
 func ErrorPanic(err error) {
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }

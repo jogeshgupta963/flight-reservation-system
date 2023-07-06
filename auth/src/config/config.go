@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func init(){
+func Init(){
 	err := godotenv.Load()
 	helper.ErrorPanic(err)
 	log.Println("Env Loaded...")
