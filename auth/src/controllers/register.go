@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"main/src/models"
 	"main/src/util/helper"
 	"os"
@@ -76,7 +75,6 @@ func Register(c *fiber.Ctx) error {
 			"data": "Internal Server Error",
 		})
 	}
-	fmt.Println(tokenString)
 	//create cookie
 	expiration,_ := time.ParseDuration(os.Getenv("JWT_EXPIRATION"))
 	c.Cookie(&fiber.Cookie{
@@ -88,7 +86,8 @@ func Register(c *fiber.Ctx) error {
 	})
 	return c.Status(200).JSON(fiber.Map{
 		"success":true,
-		"data":"user",
+		"data":user,
+		"token":tokenString,
 	})
 
 }
