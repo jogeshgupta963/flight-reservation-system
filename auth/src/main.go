@@ -20,7 +20,7 @@ func main() {
 	
 	app := fiber.New()
 	routes.Setup(app)
-	app.Get("/",func(c *fiber.Ctx) error{
+	app.Get("/api/auth/index",func(c *fiber.Ctx) error{
 		return c.SendString("Index Page")
 	})
 	
