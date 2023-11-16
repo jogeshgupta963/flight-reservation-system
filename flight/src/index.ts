@@ -4,14 +4,7 @@ import { connection } from "./config/connection";
 import "dotenv/config";
 
 const checkEnv = () => {
-    const env = [
-        "PORT",
-        "NODE_ENV",
-        "COOKIE_NAME",
-        "JWT_SECRET",
-        "JWT_EXPIRATION",
-        "MONGO_URI",
-    ];
+    const env = ["MONGO_URI"];
     env.forEach((data) => {
         if (!process.env[data]) {
             console.log(`${data} env not found`);
@@ -26,8 +19,8 @@ const initServer = async () => {
         console.log("Db error");
     });
     console.log("DB connected");
-    app.listen(config.PORT || 5000, () => {
-        console.log("Server listening");
+    app.listen(config.PORT, () => {
+        console.log(`Server listening on port ${config.PORT}`);
     });
 };
 

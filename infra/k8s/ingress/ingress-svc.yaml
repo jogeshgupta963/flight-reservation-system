@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: ingress-service
+spec:
+    ingressClassName: nginx
+    rules:
+        - host: flight.dev
+          http:
+              paths:
+                  - path: /api/flight/?(.*)
+                    pathType: ImplementationSpecific
+                    backend:
+                        service:
+                            name: flight-srv
+                            port:
+                                number: 3000

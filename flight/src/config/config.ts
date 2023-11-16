@@ -1,6 +1,6 @@
 import "dotenv/config";
 export const config = {
-    PORT: process.env.PORT,
+    PORT: process.env.PORT || 3000,
     NODE_ENV: process.env.NODE_ENV || "development",
     COOKIE_NAME: process.env.COOKIE_NAME || "fcc",
     JWT_SECRET: process.env.JWT_SECRET || "apfmlaspkfmaipfkm",
