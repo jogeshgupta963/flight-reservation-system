@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: airline-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: airline
+    template:
+        metadata:
+            labels:
+                app: airline
+        spec:
+            containers:
+                - name: airline
+                  image: jogeshgupta963/airline
+                  imagePullPolicy: Never
+                  env:
+                      - name: MONGO_URI
+                        value: "mongodb://airline-mongo-srv:27017/airline"
+                      #   - name: JWT_SECRET
+                      #     valueFrom:
+                      #         secretKeyRef:
+                      #             name: jwt-secret
+                      #             key: JWT_SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: airline-srv
+spec:
+    selector:
+        app: airline
+    type: ClusterIP
+    ports:
+        - name: airline
+          protocol: TCP
+          port: 3000
+          targetPort: 3000

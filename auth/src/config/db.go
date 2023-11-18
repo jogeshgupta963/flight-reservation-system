@@ -32,6 +32,6 @@ func ConnectDB() error {
 		Client: client,
 		Db: db,
 	}
-	fmt.Println("DB CONNECTED")
+	fmt.Println("DB CONNECTED",mongoURI)
 	return nil
 }

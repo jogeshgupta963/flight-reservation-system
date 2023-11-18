@@ -1,14 +1,14 @@
-import express from 'express'
+import express from "express";
 import { config } from "./config/config";
 import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 export const app = express();
-import {isLoggedIn} from './middlewares/loggedin' 
-import {createairline} from './controllers/create-airline';
-import { editairline } from './controllers/edit-airline';
-import { getairline } from './controllers/get-airline';
+import { isLoggedIn } from "./middlewares/loggedin";
+import { createairline } from "./controllers/create-airline";
+import { editairline } from "./controllers/edit-airline";
+import { getairline } from "./controllers/get-airline";
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
@@ -30,7 +30,7 @@ const checkEnv = () => {
     });
 };
 const initServer = async () => {
-    checkEnv();
+    // checkEnv();
     await mongoose.connect(config.MONGO_URI).catch(() => {
         console.log("Db error");
     });
@@ -41,11 +41,9 @@ const initServer = async () => {
 };
 
 initServer();
-
-app.post('/api/airline/create',isLoggedIn,createairline)
-app.get('/api/airline',isLoggedIn,getairline)
-app.post('/api/airline/edit',isLoggedIn,editairline)
-
-
-
-
+app.get("/api/airline/index", (req, res) => {
+    res.send("Airline Index page");
+});
+app.post("/api/airline/create", isLoggedIn, createairline);
+app.get("/api/airline", isLoggedIn, getairline);
+app.post("/api/airline/edit", isLoggedIn, editairline);

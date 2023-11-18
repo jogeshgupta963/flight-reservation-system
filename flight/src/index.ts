@@ -18,7 +18,7 @@ const initServer = async () => {
     await connection(config.MONGO_URI).catch(() => {
         console.log("Db error");
     });
-    console.log("DB connected");
+    console.log(`DB connected on ${config.MONGO_URI}`);
     app.listen(config.PORT, () => {
         console.log(`Server listening on port ${config.PORT}`);
     });

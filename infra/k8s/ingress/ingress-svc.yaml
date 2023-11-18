@@ -5,13 +5,34 @@ metadata:
 spec:
     ingressClassName: nginx
     rules:
-        - host: flight.dev
+        - host: localhost
           http:
               paths:
-                  - path: /api/flight/?(.*)
-                    pathType: ImplementationSpecific
+                  - path: /api/flight/
+                    pathType: Prefix
                     backend:
                         service:
                             name: flight-srv
+                            port:
+                                number: 3000
+                  - path: /api/auth/
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: auth-srv
+                            port:
+                                number: 3000
+                  - path: /api/profile/
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: profile-srv
+                            port:
+                                number: 3000
+                  - path: /api/airline/
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: airline-srv
                             port:
                                 number: 3000
