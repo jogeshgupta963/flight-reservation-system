@@ -3,9 +3,9 @@ const prisma = new PrismaClient()
 import {z} from 'zod'
 import { Request ,Response} from 'express';
 import { UserPayload } from '../middlewares/auth';
+import * as amqp from 'amqplib';
 const input = z.object({
-    Image: z.string(),
-  
+  Image: z.string(),
   phone_number: z.number(),
   address: z.string(),
   city: z.string(),
@@ -13,7 +13,11 @@ const input = z.object({
   country: z.string(),
   pincode: z.number()
 })
-export async function createprofile(req:Request,res:Response) {
+export async function createprofile(req: Request, res: Response) {
+         let channel
+         const connection = await amqp.connect("amqps://rmgykywi:FAXeDfV9FCux1vkhRqyr2cj4TLtAYOcI@puffin.rmq2.cloudamqp.com/rmgykywi");
+         channel = await connection.createChannel();
+         await channel.assertQueue('PROFILE:CREATED');
     const profiledata = req.body;
     const userid =req.user as UserPayload;
     const parsed =input.safeParse(profiledata);
@@ -47,6 +51,14 @@ export async function createprofile(req:Request,res:Response) {
 
         }
      })
+    channel.sendToQueue(
+    'PROFILE:CREATED',
+    Buffer.from(
+      JSON.stringify({
+    findsome
+      })
+    )
+     );
 
     
     

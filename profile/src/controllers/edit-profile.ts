@@ -3,8 +3,12 @@ const prisma = new PrismaClient()
 import {z} from 'zod'
 import { Request ,Response} from 'express';
 import { UserPayload } from '../middlewares/auth';
-
-export async function editprofile(req:Request,res:Response) {
+import * as amqp from 'amqplib';
+export async function editprofile(req: Request, res: Response) {
+    let channel
+         const connection = await amqp.connect("amqps://rmgykywi:FAXeDfV9FCux1vkhRqyr2cj4TLtAYOcI@puffin.rmq2.cloudamqp.com/rmgykywi");
+         channel = await connection.createChannel();
+         await channel.assertQueue("PROFILE:UPDATED");
     const profiledata = req.body;
     const userid =req.user as UserPayload;
     const findsome = await prisma.profile.findFirst({
@@ -29,6 +33,14 @@ export async function editprofile(req:Request,res:Response) {
             pincode:profiledata.pincode||findsome.pincode
         }
      })
+    channel.sendToQueue(
+    "PROFILE:UPDATED",
+    Buffer.from(
+      JSON.stringify({
+    update
+      })
+    )
+     );
 
     
     

@@ -3,20 +3,35 @@ import { ProfileDoc } from "../utils/typings/Schemas";
 
 const profileSchema = new mongoose.Schema(
   {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    ProfileId: {
+      type: Number,
     },
-    address: {
-      type: String,
-    },
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: String,
-    },
+  Image: {
+    type: String,
+  },
+  userId: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  phone_number: {
+    type: Number,
+  },
+  address: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
+  state: {
+    type: String,
+  },
+  country: {
+    type: String,
+  },
+  pincode: {
+    type: Number,
+  },
   },
   {
     toJSON: {
