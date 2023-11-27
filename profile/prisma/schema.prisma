@@ -7,18 +7,19 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:Rajbeer@4534@db.ugrhaxxzipbbjinriobb.supabase.co:5432/postgres"
+
 }
 
 model Profile{
   ProfileId Int  @default(autoincrement())
   Image String
   userId String @id
-  phone_number Int
+  phone_number String
   address String
   city String
   state String
   country String
-  pincode Int
+  pincode String
 
 }

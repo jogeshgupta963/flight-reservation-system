@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"main/src/models"
 	"main/src/util/helper"
 	"os"
@@ -42,6 +43,7 @@ func Login(c *fiber.Ctx) error{
 	err = res.Decode(&user)
 
 	if(err != nil){
+		fmt.Print(err)
 		return c.Status(500).JSON(fiber.Map{
 			"success":false,
 			"data": "Internal Server Error",
@@ -64,6 +66,7 @@ func Login(c *fiber.Ctx) error{
 	tokenString,err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	helper.ErrorPanic(err)
 	if(err!=nil){
+		fmt.Print(err)
 		return c.Status(500).JSON(fiber.Map{
 			"success":false,
 			"data": "Internal Server Error",
