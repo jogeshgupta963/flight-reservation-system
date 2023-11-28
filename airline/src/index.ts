@@ -9,6 +9,7 @@ import { isLoggedIn } from "./middlewares/loggedin";
 import { createairline } from "./controllers/create-airline";
 import { editairline } from "./controllers/edit-airline";
 import { getairline } from "./controllers/get-airline";
+import { getAllAirline } from "./controllers/get-all";
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
@@ -44,6 +45,7 @@ initServer();
 app.get("/api/airline/index", (req, res) => {
     res.send("Airline Index page");
 });
+app.get("/api/airline", getAllAirline);
 app.post("/api/airline/create", isLoggedIn, createairline);
-app.get("/api/airline", isLoggedIn, getairline);
 app.post("/api/airline/edit", isLoggedIn, editairline);
+app.get("/api/airline/:id", isLoggedIn, getairline);

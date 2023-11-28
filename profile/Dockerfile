@@ -4,5 +4,7 @@ WORKDIR /app
 COPY package.json .
 RUN npm i
 COPY . .
-RUN npx prisma generate
+
+RUN npm run prisma:generate
+RUN npx prisma migrate dev --name mign
 CMD [ "npm","run","start" ]
