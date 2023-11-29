@@ -2,10 +2,10 @@ import { app } from "./app";
 import { config } from "./config/config";
 import { connection } from "./config/connection";
 import { rmq } from "./rabbitMQ/listener";
-import { AirlineCreatedListener } from "./rabbitMQ/AIRLINE:CREATED";
-import { AirlineUpdatedListener } from "./rabbitMQ/AIRLINE:UPDATED";
-import { ProfileCreatedListener } from "./rabbitMQ/PROFILE:CREATED";
-import { ProfileUpdatedListener } from "./rabbitMQ/PROFILE:UPDATED";
+import { AirlineCreatedListener } from "./rabbitMQ/AIRLINE_CREATED";
+import { AirlineUpdatedListener } from "./rabbitMQ/AIRLINE_UPDATED";
+import { ProfileCreatedListener } from "./rabbitMQ/PROFILE_CREATED";
+import { ProfileUpdatedListener } from "./rabbitMQ/PROFILE_UPDATED";
 import "dotenv/config";
 
 
