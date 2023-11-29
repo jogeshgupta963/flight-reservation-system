@@ -17,8 +17,8 @@ spec:
                   image: jogeshgupta963/profile
                   imagePullPolicy: Never
                   env:
-                      - name: MONGO_URI
-                        value: "mongodb://profile-postgres-srv:27017/profile"
+                      - name: POSTGRES_URI
+                        value: "postgresql://postgres:profile-postgres-srv:5432/postgres"
                       #   - name: JWT_SECRET
                       #     valueFrom:
                       #         secretKeyRef:
